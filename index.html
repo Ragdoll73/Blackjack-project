@@ -1,22 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Blackjack Rush</title>
+    <meta charset="UTF-8">
+    <title>Blackjack</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="game">
-    <h1>Blackjack Rush</h1>
+    <h1>Blackjack</h1>
 
-    <div id="timer">Time: 60</div>
-    <div id="score">Score: 0</div>
-    <div id="hand">Hand: </div>
+    <div id="game">
+        <p><strong>Time left:</strong> <span id="timer">10</span></p>
+        <p><strong>Your cards:</strong> <span id="cards"></span></p>
+        <p><strong>Total:</strong> <span id="total">0</span></p>
 
-    <button id="hitBtn">Hit</button>
-    <button id="endBtn">End</button>
-</div>
+        <button id="hitBtn">Hit</button>
+        <button id="endBtn">End</button>
 
-<script src="game.js"></script>
+        <p id="result"></p>
+
+        <button id="restartBtn" class="hidden">Restart</button>
+    </div>
+
+    <script src="game.js"></script>
 </body>
 </html>
+
