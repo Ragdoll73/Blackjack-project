@@ -1,0 +1,17 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #0a0a0a;
+    color: white;
+    text-align: center;
+}
+
+.game {
+    margin-top: 80px;
+}
+
+#stayBtn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+}
