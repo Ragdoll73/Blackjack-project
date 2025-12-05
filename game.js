@@ -1,108 +1,73 @@
-let timeLeft = 60;
-let score = 0;
-let hand = [];
-let gameEnded = false;
+let timer = 10;
+let cards = [];
+let gameOver = false;
+let countdown;
 
-// draw a card 1–11
 function drawCard() {
-    return Math.floor(Math.random() * 11) + 1;
+    return Math.floor(Math.random() * 10) + 1;
 }
 
-// total of all cards
-function handTotal() {
-    return hand.reduce((a, b) => a + b, 0);
+function updateDisplay() {
+    document.getElementById("cards").innerText = cards.join(", ");
+    const total = cards.reduce((a, b) => a + b, 0);
+    document.getElementById("total").innerText = total;
+    return total;
 }
 
-// update screen text
-function updateUI() {
-    document.getElementById("timer").innerText = "Time: " + timeLeft;
-    document.getElementById("score").innerText = "Score: " + score;
-    document.getElementById("hand").innerText =
-        "Hand: " + hand.join(", ") + " (Total: " + handTotal() + ")";
+function endGame() {
+    if (gameOver) return;
+    gameOver = true;
+
+    clearInterval(countdown);
+
+    const total = updateDisplay();
+    let message = "";
+
+    if (total > 21) message = "Bust! You lost!";
+    else if (total === 21) message = "Blackjack! You win!";
+    else if (total >= 17) message = "You win!";
+    else message = "You lose!";
+
+    document.getElementById("result").innerText = message;
+
+    document.getElementById("hitBtn").classList.add("hidden");
+    document.getElementById("endBtn").classList.add("hidden");
+    document.getElementById("restartBtn").classList.remove("hidden");
 }
 
-// reset with 1 starting card
-function resetHand() {
-    hand = [drawCard()];
-    updateUI();
+function restartGame() {
+    timer = 10;
+    cards = [];
+    gameOver = false;
+    document.getElementById("result").innerText = "";
+    document.getElementById("restartBtn").classList.add("hidden");
+    document.getElementById("hitBtn").classList.remove("hidden");
+    document.getElementById("endBtn").classList.remove("hidden");
+
+    startGame();
 }
 
-function endRound() {
-    if (gameEnded) return;
+function startGame() {
+    cards = [drawCard()];
+    updateDisplay();
 
-    const total = handTotal();
-
-    // scoring rules
-    if (total === 21) {
-        score += 3;
-    } else if (total >= 17 && total < 21) {
-        score += 1;
-    } else {
-        score -= 1;
-    }
-
-    updateUI();
-    resetHand();
-}
-
-// END button ends game immediately
-function finalEnd() {
-    gameEnded = true;
-
-    const total = handTotal();
-
-    if (total === 21) score += 3;
-    else if (total >= 17 && total < 21) score += 1;
-    else score -= 1;
-
-    updateUI();
-
-    alert("Final Score: " + score);
-}
-
-// HIT button
-document.getElementById("hitBtn").addEventListener("click", () => {
-    if (gameEnded) return;
-
-    hand.push(drawCard());
-    updateUI();
-
-    const total = handTotal();
-
-    if (total > 21) {
-        // bust
-        score -= 1;
-        resetHand();
-        updateUI();
-    } else if (total === 21) {
-        // perfect 21 auto-scores
-        score += 3;
-        resetHand();
-        updateUI();
-    }
-});
-
-// END button
-document.getElementById("endBtn").addEventListener("click", finalEnd);
-
-// Countdown timer
-function startTimer() {
-    const timerInterval = setInterval(() => {
-        if (gameEnded) {
-            clearInterval(timerInterval);
-            return;
-        }
-
-        timeLeft--;
-        updateUI();
-
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            finalEnd();
+    countdown = setInterval(() => {
+        timer--;
+        document.getElementById("timer").innerText = timer;
+        if (timer <= 0) {
+            endGame();
         }
     }, 1000);
 }
 
-// start game
-resetHand();
-startTimer();
+document.getElementById("hitBtn").onclick = () => {
+    if (gameOver) return;
+    cards.push(drawCard());
+    const total = updateDisplay();
+    if (total >= 21) endGame();
+};
+
+document.getElementById("endBtn").onclick = endGame;
+document.getElementById("restartBtn").onclick = restartGame;
+
+startGame();
