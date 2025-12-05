@@ -1,17 +1,32 @@
 body {
-    background: #0a0a0a;
+    background: #0b3d0b;
     color: white;
     font-family: Arial, sans-serif;
     text-align: center;
+    padding-top: 40px;
 }
 
-.game {
-    margin-top: 80px;
+#game {
+    background: #145214;
+    padding: 20px;
+    width: 350px;
+    margin: auto;
+    border-radius: 10px;
 }
 
 button {
-    margin-top: 20px;
-    padding: 12px 25px;
-    font-size: 20px;
+    padding: 10px 18px;
+    font-size: 18px;
+    margin: 8px;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
+}
+
+#hitBtn { background: #1e90ff; }
+#endBtn { background: #ffca28; color: black; }
+#restartBtn { background: #ff5252; }
+
+.hidden {
+    display: none;
 }
